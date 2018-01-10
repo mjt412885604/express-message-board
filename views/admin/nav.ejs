@@ -1,0 +1,49 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+            <img style="width:25px;" alt="Brand" src="/images/log.jpg">
+          </a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <%if(title=='首页'){%>
+                <li class="active"><a href="/">用户管理 </a></li>
+                <li><a href="/message">查看留言板 </a></li>
+                <li><a href="/board">留言板 </a></li>
+                <% }else if(title=='留言板'){%>
+                  <li><a href="/">用户管理 </a></li>
+                  <li><a href="/message">查看留言板 </a></li>
+                <li class="active"><a href="/board">留言板 </a></li>
+                <%}else if(title=='查看留言板'){%>
+                  <li><a href="/">用户管理 </a></li>
+                  <li class="active"><a href="/message">查看留言板 </a></li>
+                  <li><a href="/board">留言板 </a></li>
+
+                <% }else if(title=='留言'){%>
+                <li><a href="/">用户管理 </a></li>
+                <li><a href="/message">查看留言板 </a></li>
+                <li class="active"><a href="/board">留言板 </a></li>
+                <%} else{%>
+                  <li><a href="/">用户管理 </a></li>
+                  <li><a href="/message">查看留言板 </a></li>
+                  <li><a href="/board">留言板 </a></li>
+                <%}%>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">你好，<%=name%> <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a id='lgout' href="/api/login.out">退出</a></li>
+                </ul>
+              </li>
+            </ul>
+        </div>
+    </div>
+</nav>

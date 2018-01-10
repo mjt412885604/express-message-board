@@ -1,0 +1,79 @@
+<%- include header%>
+    <div class="container">
+    <div class="row" style="margin-top:100px;">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">注册</h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label">用户名</label>
+                            <div class="col-sm-9">
+                            <input type="text" class="form-control" id="username" placeholder="用户名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-3 control-label">密码</label>
+                            <div class="col-sm-9">
+                            <input type="password" class="form-control" id="password" placeholder="密码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-3 control-label">确认密码</label>
+                            <div class="col-sm-9">
+                            <input type="password" class="form-control" id="reset" placeholder="确认密码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="" style="text-align:center;">
+                                <button type="button" class="btn btn-primary" id="regBtn">注册</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-footer">版权MJT个人所有</div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include footer%>
+<script type="text/javascript">
+    $('#regBtn').on('click',function(){
+      let username = $('#username').val(),
+      password = $('#password').val(),
+      reset = $('#reset').val();
+
+      if(!username){
+          alert('请输入用户名')
+          return;
+      }else if(!password){
+          alert('请输入密码')
+          return;
+      }else if(password != reset){
+          alert('密码不一致')
+          return;
+      }
+
+      $.ajax({
+        type: "post",
+        url: "/api/adduser",
+        data: {
+          username,
+          password
+        },
+        dataType: "json",
+        success: function(data) {
+          if(data.code == 0){
+            alert(data.msg);
+            location.href='/login';
+          }else {
+              alert(data.msg || '注册失败');
+          }
+
+        }
+      });
+    })
+  </script>

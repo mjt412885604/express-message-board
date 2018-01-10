@@ -1,0 +1,61 @@
+<%- include header%>
+<div class="container">
+    <div class="row" style="margin-top:100px;">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">登录</h3>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label">用户名</label>
+                            <div class="col-sm-9">
+                            <input type="text" class="form-control" id="username" placeholder="用户名">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-3 control-label">密码</label>
+                            <div class="col-sm-9">
+                            <input type="password" class="form-control" id="password" placeholder="密码">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="" style="text-align:center;">
+                                <button type="button" class="btn btn-primary" id="loginBtn">登陆</button>
+                                <a href="/register" style="margin-left:20px;" class="btn btn-warning">注册</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-footer">版权MJT个人所有</div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include footer%>
+<script>
+$(function(){
+    $('#loginBtn').on('click',function(){
+      let username = $('#username').val();
+      let password = $('#password').val();
+
+        $.ajax({
+            type: "post",
+            url: "/api/login",
+            data: {
+            username,
+            password
+            },
+            success: function(data) {
+                if(data.code == 0){
+                    location.href='/'
+                }else{
+                    alert(data.msg);
+                }
+            }
+        });
+    });
+})
+</script>

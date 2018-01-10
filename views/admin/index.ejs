@@ -1,0 +1,147 @@
+<%- include header%>
+<div style="padding:10px;">
+  <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>用户名</th>
+          <th>密码</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% for(var i =0; i<data.length;i++){%>
+          <tr class="row<%=i+1%>">
+            <th scope="row">
+              <%= i +1 %>
+            </th>
+            <td class="name">
+              <%=data[i].username %>
+            </td>
+            <td class="password">
+              <div style="word-break:break-all;"><%=data[i].password%></div>
+            </td>
+            <td >
+
+            <button type="button" class="btn btn-primary submit btn-sm" data="<%=i+1%>" name="button">编辑</button>
+
+              <button type="button" class="btn delete btn-danger btn-sm" data="<%=i+1%>" name="button">删除</button>
+            </td>
+          </tr>
+        <%}%>
+    </tbody>
+</table>
+<%- include page%>
+</div>
+
+<!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">修改密码</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-2 control-label">用户名</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputEmail3" placeholder="用户名" disabled>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputPassword" class="col-sm-2 control-label">密码</label>
+              <div class="col-sm-10">
+                <input type="password" class="form-control" id="inputPassword" placeholder="密码">
+              </div>
+            </div>
+            </from>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+          <button id="modify" type="button" class="btn btn-primary">修改</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div id="deleteModal" class="modal fade fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+       <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">删除用户</h4>
+      </div>
+      <div class="modal-body">是否删除该用户？</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button id="modal-delete" type="button" class="btn btn-danger">删除</button>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include footer%>
+<script>
+$(function(){
+   $('.submit').on('click',function(){
+        let id = $(this).attr('data');
+        $('#myModal').modal()
+        let name = $('.row'+id).find('.name').html().trim();
+        let password = $('.row'+id).find('.password').html().trim();
+
+        $('#inputEmail3').val(name)
+        $('#inputPassword').val(password)
+        console.log(name,password);
+    })
+
+    $('#modify').on('click', function(){
+      let username = $('#inputEmail3').val(),
+        password = $('#inputPassword').val();
+
+        $.ajax({
+          url: '/api/modify',
+          type: 'post',
+          data: {
+            username,
+            password
+          },
+          success: function(data){
+            if(data.code == 0){
+              alert('密码修改成功')
+              window.location.reload()
+            }else {
+              alert(data.msg)
+            }
+          }
+        })
+    })
+
+    $('.delete').on('click', function(){
+      let id = $(this).attr('data');
+      let username = $('.row'+id).find('.name').html().trim(); 
+
+      $('#deleteModal').modal();
+    })
+
+    $('#modal-delete').on('click', function(){
+        if(username){
+          $.ajax({
+            url: '/api/deleteuser',
+            type: 'post',
+            data: {
+              username
+            },
+            success: function(data){
+              if(data.code == 0){
+                alert(data.msg)
+                window.location.reload()
+              }else {
+                alert(data.msg || '删除失败')
+              }
+            }
+          })
+        }
+      });
+})
+</script>

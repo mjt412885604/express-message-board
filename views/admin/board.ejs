@@ -1,0 +1,55 @@
+<%- include header%>
+<div class="container">
+    <form class="form-horizontal" style="margin-top:50px;">
+        <div class="form-group form-group-sm">
+            <label class="col-sm-2 control-label" for="formGroupInputLarge">姓名</label>
+            <div class="col-sm-10">
+                <input class="form-control" disabled value="<%= name %>" type="text" id="username" placeholder="">
+            </div>
+        </div>
+        <div class="form-group form-group-sm">
+            <label class="col-sm-2 control-label" for="formGroupInputLarge">留言内容</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" id="content" rows="5"></textarea>
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <div class="col-sm-2 control-label"></div>
+                <div class="col-sm-10" style="text-align:center;">
+                    <button type="button" class="btn btn-info" id='btn' name="button">提交留言</button>
+                    <a href="/message" style="margin-left:20px;" class="btn btn-warning">查看留言板</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<%- include footer%>
+<script>
+    $(function(){
+        $('#btn').on('click', function(){
+            let content = $('#content').val();
+
+            if(!content){
+                alert('请输入留言内容')
+                return;
+            }
+
+            $.ajax({
+                url: '/api/addmessage',
+                type: 'post',
+                data: {
+                    username: $('#username').val(),
+                    content
+                },
+                success: function(data){
+                    if(data.code == 0){
+                        location.href='/message';
+                    }else {
+                        alert(data.msg || '留言失败')
+                    }
+                }
+            })
+        });
+    })
+</script>
